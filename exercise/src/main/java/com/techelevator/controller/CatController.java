@@ -26,12 +26,12 @@ public class CatController {
         this.catPicService = catPicService;
     }
 
-    @GetMapping ("/api/cards")
-    public List<CatCard> list () {
+    @GetMapping("/api/cards")
+    public List<CatCard> list() {
         return catCardDao.list();
     }
 
-    @GetMapping ("/api/cards/{id}")
+    @GetMapping("/api/cards/{id}")
     public CatCard get(@PathVariable long id) {
         CatCard card = catCardDao.get(id);
         if (card == null) {
@@ -41,23 +41,26 @@ public class CatController {
         }
     }
 
-   @PostMapping ()
-    public boolean save(CatCard cardToSave) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/api/cards")
+    public boolean save(@Valid @RequestBody CatCard cardToSave) {
 
         return catCardDao.save(cardToSave);
-   }
+    }
 
-   @PutMapping ("/api/cards/{id}")
+    @PutMapping("/api/cards/{id}")
     public boolean update(@PathVariable long id, @Valid @RequestBody CatCard card) {
-         card = this.catCardDao.get(id);
+        CatCard c = this.catCardDao.get(id);
 
-        if (card == null) {
+        if (c == null) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Card not found.");
         }
-        return this.catCardDao.update(id, card);
-   }
 
-   @DeleteMapping ("/api/cards/{id}")
+        return this.catCardDao.update(id, card);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/api/cards/{id}")
     public void delete(@PathVariable long id) {
         CatCard card = this.catCardDao.get(id);
 
@@ -65,18 +68,20 @@ public class CatController {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Card not found.");
         }
         this.catCardDao.delete(id);
-   }
+    }
 
-   @GetMapping("/api/cards/random")
+    @GetMapping("/api/cards/random")
     public CatCard createRandomCatCard() {
-       CatPic catPic = catPicService.getPic();
-       CatFact catFact = catFactService.getFact();
 
-       CatCard createdCatCard = null;
-       createdCatCard.getCatFact(catFact);
-       createdCatCard.getImgUrl(catPic.);
+        CatPic catPic = catPicService.getPic();
+        CatFact catFact = catFactService.getFact();
 
-   }
+        CatCard createdCatCard = new CatCard();
+        createdCatCard.setCatFact(catFact.getText());
+        createdCatCard.setImgUrl(catPic.getFile());
+        createdCatCard.getCaption();
+        createdCatCard.getCatCardId();
 
-
+        return createdCatCard;
+    }
 }

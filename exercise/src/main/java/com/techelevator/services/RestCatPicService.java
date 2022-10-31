@@ -15,11 +15,10 @@ public class RestCatPicService implements CatPicService {
 
 	@Override
 	public CatPic getPic() {
-		// TODO Auto-generated method stub
 		CatPic catPic = null;
 
 		try {
-			catPic = restTemplate.getForObject(API_BASE_URL + catPic.getFile(), CatPic.class);
+			catPic = restTemplate.getForObject(API_BASE_URL , CatPic.class);
 		} catch (RestClientResponseException | ResourceAccessException e) {
 			e.getMessage();
 		}

@@ -1,6 +1,8 @@
 package com.techelevator.services;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.techelevator.model.CatFact;
@@ -15,11 +17,10 @@ public class RestCatFactService implements CatFactService {
 
 	@Override
 	public CatFact getFact() {
-		// TODO Auto-generated method stub
 		CatFact catFact = null;
 
 		try {
-			catFact = restTemplate.getForObject(API_BASE_URL + catFact, CatFact.class);
+			catFact = restTemplate.getForObject(API_BASE_URL, CatFact.class);
 		} catch (RestClientResponseException | ResourceAccessException e) {
 			e.getMessage();
 		}
